@@ -43,7 +43,18 @@ function loadSaved(): Saved | null {
     const raw = localStorage.getItem(KEY);
     if (!raw) return null;
     const s = JSON.parse(raw) as Saved;
-    return Array.isArray(s.plans) && s.plans.length ? s : null;
+    if (!Array.isArray(s.plans) || !s.plans.length) return null;
+    // Older builds could save two rows with the same id (Text tab edits with repeated lines).
+    for (const p of s.plans) {
+      const seen = new Set<string>();
+      p.rows = p.rows.map((r) => {
+        if (!seen.has(r.id)) return seen.add(r.id), r;
+        const id = T.newId();
+        seen.add(id);
+        return { ...r, id };
+      });
+    }
+    return s;
   } catch {
     return null;
   }
@@ -776,10 +787,15 @@ export function Planner() {
               onChange={(text) => {
                 const parsed = T.parse(text);
                 // Keep ids and collapsed state for rows that survive the edit unchanged.
-                const old = new Map(rows.map((r) => [`${r.depth}\u0000${r.text}`, r]));
+                // Each old row is reused at most once, so repeated lines keep distinct ids.
+                const old = new Map<string, Row[]>();
+                for (const r of rows) {
+                  const k = `${r.depth}\u0000${r.text}`;
+                  old.set(k, [...(old.get(k) ?? []), r]);
+                }
                 setRows(
                   parsed.map((p) => {
-                    const o = old.get(`${p.depth}\u0000${p.text}`);
+                    const o = old.get(`${p.depth}\u0000${p.text}`)?.shift();
                     return o ? { ...p, id: o.id, collapsed: o.collapsed } : p;
                   }),
                   "ascii",

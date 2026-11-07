@@ -83,3 +83,7 @@ Click a checkbox to cycle `[ ]` → `[~]` → `[x]`. Hover a line for add-checkb
 ```
 
 A plan is a flat list of `{ depth, text, status }` rows, which maps one-to-one onto the lines of the ASCII tree.
+
+## License
+
+[MIT](LICENSE)

@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #ee6a3e;
+  --color-bg: #0e0f11;
+  --color-panel: #15171a;
+  --color-hover: #1c1f23;
+  --color-line: #262a30;
+  --color-line-strong: #3b414a;
+  --color-fg: #e6e8eb;
+  --color-dim: #8b929c;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  kbd {
+    @apply rounded border border-line bg-panel px-1 font-mono;
+  }
+  code {
+    @apply font-mono text-fg;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply flex min-h-[28rem] flex-col overflow-hidden rounded-lg border border-line bg-panel;
+  }
+  .panel-head {
+    @apply flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-2;
+  }
+  .panel-head h2 {
+    @apply text-sm font-medium;
+  }
+  .btn {
+    @apply rounded-md border border-line-strong bg-hover px-3 py-1.5 text-sm text-fg hover:border-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-line-strong;
+  }
+  .btn-quiet {
+    @apply border-transparent bg-transparent px-2 py-1 text-dim hover:border-transparent hover:text-fg aria-pressed:text-brand;
+  }
+  .field {
+    @apply rounded-md border border-line-strong bg-hover px-3 py-1.5 text-sm text-fg;
+  }
+  .icon-btn {
+    @apply h-6 w-6 rounded font-mono text-dim hover:bg-line hover:text-fg;
+  }
+  .seg {
+    @apply flex overflow-hidden rounded-md border border-line-strong font-mono text-xs;
+  }
+  .seg button {
+    @apply px-2 py-1 text-dim hover:text-fg aria-pressed:bg-line aria-pressed:text-fg;
+  }
+  .status {
+    @apply shrink-0 rounded px-0.5 font-mono whitespace-pre hover:bg-line;
+  }
+  .status-none {
+    @apply w-[3ch] text-line-strong;
+  }
+  .status-todo {
+    @apply text-dim;
+  }
+  .status-doing {
+    @apply text-brand;
+  }
+  .status-done {
+    @apply text-emerald-400;
+  }
+}

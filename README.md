@@ -2,6 +2,8 @@
 
 Paste an ASCII tree, drag it into shape, copy it back out.
 
+**Demo:** https://innovatedev-playground.github.io/ascii-tree/
+
 ```
 Launch the website
 ├── [x] Scaffold
@@ -25,7 +27,10 @@ npm install
 npm run dev                      # http://localhost:3000 (add -- --host for LAN)
 npm run build                    # production build → .output/
 node .output/server/index.mjs    # serve the build
+npm run build:pages              # static demo build → .output/public (GitHub Pages)
 ```
+
+Pushing to `main` deploys the static demo through `.github/workflows/pages.yml`. To set it up once, go to repo Settings → Pages → Source and choose GitHub Actions. The demo is the browser-only version of the app, so features that need the server must turn themselves off when there's no server.
 
 Deno: `deno install --no-lock`, then `deno task dev`.
 

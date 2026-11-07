@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:pages": "NITRO_PRESET=github_pages vite build --base /ascii-tree/",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -4,6 +4,8 @@ import type { Row, TreeStyle } from "../lib/tree.ts";
 
 interface Plan {
   id: string;
+  /** User-chosen name; when unset the plan is named after its first line. */
+  name?: string;
   rows: Row[];
   updated: number;
 }
@@ -48,7 +50,7 @@ function loadSaved(): Saved | null {
 }
 
 function planTitle(p: Plan): string {
-  return p.rows[0]?.text.trim() || "Untitled plan";
+  return p.name?.trim() || p.rows[0]?.text.trim() || "Untitled plan";
 }
 
 function isBlank(rows: Row[]): boolean {
@@ -195,6 +197,13 @@ export function Planner() {
     switchPlan(p.id);
     setMode("tree");
     setFocus({ id: p.rows[0].id, caret: 0 });
+  }
+
+  function renamePlan() {
+    const next = prompt("Rename plan (leave empty to use the first line)", plan.name ?? planTitle(plan));
+    if (next === null) return;
+    const name = next.trim() || undefined;
+    setPlans((ps) => ps.map((p) => (p.id === plan.id ? { ...p, name, updated: Date.now() } : p)));
   }
 
   function deletePlan() {
@@ -704,6 +713,7 @@ export function Planner() {
           Paste tree
         </button>
         <button type="button" class="btn" onClick={addPlan}>New</button>
+        <button type="button" class="btn btn-quiet" onClick={renamePlan}>Rename</button>
         <button type="button" class="btn btn-quiet" onClick={deletePlan}>Delete</button>
         <div class="ml-auto flex items-center gap-3 text-sm text-dim">
           {total > 0 && (

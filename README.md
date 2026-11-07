@@ -16,20 +16,18 @@ Plans are saved in the browser (localStorage); nothing is sent to a server.
 
 Built with [Fresh 3](https://fresh.deno.dev) (Vite plugin), Preact and Tailwind 4.
 
-## Development (Deno)
+## Development
 
-Requires Deno 2.x. Deno reads `package.json`, so no separate config is needed.
+Requires Node 20.19+ or 22.12+.
 
 ```sh
-deno install            # install npm dependencies into node_modules
-deno task dev           # dev server with hot reload → http://localhost:5173
-deno task dev --host    # also expose on your LAN
-deno task build         # production build → .output/
-deno run -A .output/server/index.mjs   # serve the build (PORT=8000 to change port)
-deno check islands/Planner.tsx         # type-check
+npm install
+npm run dev                      # http://localhost:3000 (add -- --host for LAN)
+npm run build                    # production build → .output/
+node .output/server/index.mjs    # serve the build
 ```
 
-npm works too: `npm install`, `npm run dev`, `npm run build`, `node .output/server/index.mjs`.
+Deno: `deno install --no-lock`, then `deno task dev`.
 
 ## Using it
 
@@ -59,6 +57,8 @@ Click a checkbox to cycle `[ ]` → `[~]` → `[x]`. Hover a line for add-checkb
 **Moving**: drag the `⠿` handle or the branch lines. The orange line shows where it lands; move sideways to change the level.
 
 **Selecting**: drag across lines, `Shift+click`, `Shift+↑↓`, or `Ctrl+A` (line text → line + children → siblings → parent → … → whole tree). A selection always includes children. Then `Ctrl+C` copies it as a standalone tree, `Ctrl+X` cuts, `Delete` removes, and `Ctrl+V` replaces it.
+
+**Plans**: a plan is named after its first line until you click **Rename**; clear the name to go back to the first line.
 
 **Output**: switch between `├──` and `|--` characters, toggle `[x]` marks, then Copy, download `.txt`, or Share a link. The **Text** tab edits the whole tree as plain text.
 
